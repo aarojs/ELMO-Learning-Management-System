@@ -1,9 +1,10 @@
 namespace ELearning;
 
-public class Quiz : Task
+public class Quiz : Task, ISubmittable
 {
     private int _numberOfQuestions;
     private bool _isOnline;
+    private bool _submitted;
 
     public int NumberOfQuestions
     {
@@ -16,7 +17,7 @@ public class Quiz : Task
         set { _isOnline = value; }
     }
 
-    public Quiz(string taskId, string taskName, DateTime dueDate, int totalMark, int numberOfQuestions) : base(taskId, taskName, dueDate, totalMark)
+    public Quiz(string taskId, string taskName, DateTime dueDate, double totalMark, Unit unit, int numberOfQuestions) : base(taskId, taskName, dueDate, totalMark, unit)
     {
         _numberOfQuestions = numberOfQuestions;
     }
@@ -26,5 +27,19 @@ public class Quiz : Task
         Console.WriteLine($"Quiz: {TaskName}, Due: {DueDate.ToShortDateString()}, Questions: {NumberOfQuestions}");
     }
 
-    
+    public void Submit()
+    {
+        _submitted = true;
+    }
+
+    public bool IsSubmitted()
+    {
+        if (_submitted)
+        {
+            return true;
+        }
+        return false;
+    }
+
+
 }

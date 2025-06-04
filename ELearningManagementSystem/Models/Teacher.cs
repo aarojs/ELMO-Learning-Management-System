@@ -13,8 +13,10 @@ public class Teacher : User
     private TeacherRole _role;
     private List<Unit> _teachingUnits;
 
-    //Teacher has access to instance of TaskManager 
+    //Teacher has access to instance of Managers
     private TaskManager _taskManager;
+    private UnitManager _unitManager;
+    private UserManager _userManager;
 
 
     public TeacherRole Role
@@ -27,52 +29,46 @@ public class Teacher : User
     {
         get { return _teachingUnits; } //fix
     }
+    public TaskManager TaskManager
+    {
+        get { return _taskManager; }
+    }
+    public UnitManager UnitManager
+    {
+        get { return _unitManager; }
+    }
+    public UserManager UserManager
+    {
+        get { return _userManager; }
+    }
 
     public Teacher(string id, string password, string firstName, string lastName, string email) : base(id, password, firstName, lastName, email)
     {
         _teachingUnits = new List<Unit>();
     }
 
+    //Teacher Menu logic moved to Menu handler class. 
+    //Encapsulates menu functionality
     public override void MainMenu()
     {
-
-
-        bool finished = false;
-
-        //Main Menu loop
-        while (!finished)
-        {
-            Console.WriteLine("Teacher Menu:");
-            Console.WriteLine("1. Create Task");
-            Console.WriteLine("2. View Tasks");
-            Console.WriteLine("3. Change Password");
-            Console.WriteLine("4. Logout");
-            String input = Console.ReadLine();
-
-            switch (input)
-            {
-                case "1":
-                    _taskManager.CreateTask();
-                    break;
-                case "2":
-                    _taskManager.ViewTasks();
-                    break;
-                case "3":
-                    ChangePassword();
-                    break;
-                case "4":
-                    return;
-                default:
-                    Console.WriteLine("Invalid selection");
-                    break;
-            }
-        }
-
-
+        TeacherMenu menu = new TeacherMenu(this);
+        menu.ShowMenu();
     }
-    public void SetTaskManager(TaskManager taskManager)
+
+    //Assign passed in manager instance
+    public void SetManagers(TaskManager taskManager, UnitManager unitManager, UserManager userManager)
     {
         _taskManager = taskManager;
+        _unitManager = unitManager;
+        _userManager = userManager;
+    }
+
+    public void AddUnit(Unit unit)
+    {
+        if (!_teachingUnits.Contains(unit))
+        {
+            _teachingUnits.Add(unit);
+        }
     }
 
 

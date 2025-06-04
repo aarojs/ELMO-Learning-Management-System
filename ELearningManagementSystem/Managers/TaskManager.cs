@@ -4,8 +4,9 @@ public class TaskManager
 {
     private List<Task> _tasks = new List<Task>();
 
+
     //Look back over this what are we even doing here
-    public void CreateTask()
+    public void CreateTask(Unit unit)
     {
         Console.WriteLine("Choose task type: 1. Assignment, 2. Quiz, 3. Exam");
         string choice = Console.ReadLine();
@@ -20,7 +21,7 @@ public class TaskManager
         DateTime dueDate = DateTime.Parse(Console.ReadLine());
 
         Console.WriteLine("Enter Total Mark: ");
-        int totalMark = int.Parse(Console.ReadLine());
+        double totalMark = double.Parse(Console.ReadLine());
 
         Task newTask = null;
 
@@ -37,7 +38,7 @@ public class TaskManager
                 int max = int.Parse(Console.ReadLine());
 
                 AssignmentParams ap = new AssignmentParams { Description = desc, MinWords = min, MaxWords = max };
-                newTask = TaskFactory.CreateAssignment(taskId, taskName, dueDate, totalMark, ap);
+                newTask = TaskFactory.CreateAssignment(taskId, taskName, dueDate, totalMark, unit, ap);
                 break;
 
             case "2":
@@ -48,7 +49,7 @@ public class TaskManager
                 bool online = bool.Parse(Console.ReadLine());
 
                 QuizParams qp = new QuizParams { NumberOfQuestions = numQ, IsOnline = online };
-                newTask = TaskFactory.CreateQuiz(taskId, taskName, dueDate, totalMark, qp);
+                newTask = TaskFactory.CreateQuiz(taskId, taskName, dueDate, totalMark, unit, qp);
                 break;
 
             case "3":
@@ -58,30 +59,72 @@ public class TaskManager
                 Console.WriteLine("Is Open Book (true/false): ");
                 bool openBook = bool.Parse(Console.ReadLine());
 
-                Console.WriteLine("Is Online (true/false): ");
-                bool isOnline = bool.Parse(Console.ReadLine());
-
                 Console.WriteLine("Location: ");
                 string location = Console.ReadLine();
 
-                ExamParams ep = new ExamParams { ExamDurationMins = duration, IsOpenBook = openBook, IsOnline = isOnline, ExamLocation = location };
-                newTask = TaskFactory.CreateExam(taskId, taskName, dueDate, totalMark, ep);
+                ExamParams ep = new ExamParams { ExamDurationMins = duration, IsOpenBook = openBook, ExamLocation = location };
+                newTask = TaskFactory.CreateExam(taskId, taskName, dueDate, totalMark, unit, ep);
                 break;
         }
 
         if (newTask != null)
         {
+            //Add to TaskManager global task list
             _tasks.Add(newTask);
+            //Add to specific Unit's internal task list 
+            unit.AddTask(newTask);
+
             Console.WriteLine("Task added successfully!\n");
             newTask.DisplayTaskInfo();
         }
     }
 
-    public void ViewTasks()
+    public void ViewTasks(Unit unit)
     {
-        foreach (Task task in _tasks)
+        foreach (Task task in unit.Tasks)
         {
             Console.WriteLine($"Task name: {task.TaskName}");
+        }
+    }
+
+    public Task FindTask(string id)
+    {
+        foreach (Task t in _tasks)
+        {
+            if (t.TaskId.Equals(id, StringComparison.OrdinalIgnoreCase))
+            {
+                return t;
+            }
+        }
+        return null;
+    }
+
+    public void AssignTaskToStudent(Task task, Student student)
+    {
+        if (!student.PendingTasks.Contains(task))
+        {
+            student.AddPendingTask(task);
+            Console.WriteLine($"Task {task.TaskName} assigned to {student.FirstName} {student.LastName}");
+        }
+        else
+        {
+            Console.WriteLine("Task is already assigned to student");
+        }
+    }
+
+
+    public void AddTasksToUnit(Unit unit, Task task)
+    {
+        if (unit == null || task == null)
+        {
+            Console.WriteLine("Task is invalid");
+            return;
+        }
+        if (!unit.Tasks.Contains(task))
+        {
+            unit.AddTask(task);
+            _tasks.Add(task);
+            Console.WriteLine($"{task.TaskName} added to {unit.UnitTitle}");
         }
     }
 }

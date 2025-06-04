@@ -47,12 +47,8 @@ public class UnitManager
         }
     }
 
- 
 
-    public void AddTasksToUnit(Unit unit)
-    {
 
-    }
 
     public void EnrolStudent(Unit unit, Student student)
     {
@@ -61,11 +57,21 @@ public class UnitManager
             Console.WriteLine("Student cannot be enrolled");
             return;
         }
-
         if (!unit.EnrolledStudents.Contains(student))
         {
             unit.AddStudent(student);
+            
             Console.WriteLine($"Student {student.FirstName} {student.LastName} added to {unit.UnitCode}");
+        }
+        if (!student.EnrolledUnits.Contains(unit))
+        {
+            student.AddUnit(unit);
+            //Add all tasks within Unit to Student's task list
+            foreach (Task task in unit.Tasks)
+            {
+                student.AddPendingTask(task);
+            }
+            Console.WriteLine($"Unit successfully added to Student's enrollment");
         }
         else
         {
@@ -85,6 +91,20 @@ public class UnitManager
         {
             unit.RemoveStudent(student);
             Console.WriteLine($"Student {student.FirstName} {student.LastName} removed from {unit.UnitTitle}");
+        }
+        if (!student.EnrolledUnits.Contains(unit))
+        {
+            student.RemoveUnit(unit);
+            //Remove tasks 
+            foreach (Task task in student.PendingTasks)
+            {
+                student.RemovePendingTask(task);
+            }
+            foreach (Task task in student.SubmittedTasks)
+            {
+                student.RemoveSubmittedTask(task);
+            }
+            Console.WriteLine("Unit and corresponding tasks successfully removed from Student's file.");
         }
         else
         {
@@ -114,6 +134,11 @@ public class UnitManager
         {
             unit.AddTeacher(teacher);
             Console.WriteLine($"Teacher {teacher.FirstName} {teacher.LastName} assigned to unit {unit.UnitCode}");
+        }
+        if (!teacher.TeachingUnits.Contains(unit))
+        {
+            teacher.AddUnit(unit);
+            Console.WriteLine("Unit successfully added to Teacher's schedule");
         }
         else
         {

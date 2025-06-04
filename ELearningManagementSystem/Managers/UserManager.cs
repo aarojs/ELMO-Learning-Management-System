@@ -92,10 +92,13 @@ public class UserManager
     public string GenerateUserId(Role role, string firstName, string lastName)
     {
         string initials = $"{firstName[0]}{lastName[0]}".ToUpper();
-        //Generate unique ID with 5 digits
-        string userGuid = Guid.NewGuid().ToString().Substring(0, 4);
-        //User id is first 3 letters of their role, their initials and the 4 digit guid
-        return $"{role.ToString().Substring(0, 3).ToUpper()}_{initials}_{userGuid}";
+
+        //Generate unique ID with 4digits
+        Random random = new Random();
+        String digits = random.Next(0, 9999).ToString("D4");
+
+        //User id is first 3 letters of their role, their initials and the 4 digit number
+        return $"{role.ToString().Substring(0, 3).ToUpper()}_{initials}{digits}";
     }
 
     //Unique User ID to create email address
@@ -114,8 +117,7 @@ public class UserManager
         foreach (User u in _users)
         {
             Console.WriteLine($"UserID: {u.UserId}");
-            Console.WriteLine($"First Name: {u.FirstName}");
-            Console.WriteLine($"Last Name: {u.LastName}\n");
+            Console.WriteLine($"Name: {u.FirstName} {u.LastName}");
         }
     }
 

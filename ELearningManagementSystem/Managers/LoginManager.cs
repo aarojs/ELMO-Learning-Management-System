@@ -2,39 +2,37 @@ namespace ELearning;
 
 public class LoginManager
 {
-    private List<User> _users;
+    private UserManager _userManager;
 
-    public LoginManager()
+    public LoginManager(UserManager userManager)
     {
-        _users = new List<User>();
+        _userManager = userManager;
     }
 
     //Log in and return User 
     public User Login()
     {
         Console.WriteLine("User ID: ");
-        string userID = Console.ReadLine();
+        string userId = Console.ReadLine();
 
         Console.WriteLine("Password: ");
         string password = Console.ReadLine();
 
         //Admin login 
-        if (userID == "admin" && password == "admin")
+        if (userId == "admin" && password == "admin")
         {
             return Admin.Instance;
         }
 
         //Regular user Login 
-        foreach (User user in _users)
+        User user = _userManager.FindUser(userId);
+        if (user != null && user.Password == password)
         {
-            if (user.UserId == userID && user.Password == password)
-            {
-                return user;
-            }
+            return user;
         }
 
         //If user or Admin is not returned, print error message
-        Console.WriteLine("Login failed. Invalid login credentials");
+            Console.WriteLine("Login failed. Invalid login credentials");
         return null;
     }
 

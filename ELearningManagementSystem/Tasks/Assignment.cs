@@ -1,10 +1,11 @@
 namespace ELearning;
 
-public class Assignment : Task
+public class Assignment : Task, ISubmittable
 {
     private string _description;
     private int _minWords;
     private int _maxWords;
+    private bool _submitted;
 
     public string Description
     {
@@ -22,7 +23,7 @@ public class Assignment : Task
         set { _maxWords = value; }
     }
 
-    public Assignment(string taskId, string taskName, DateTime dueDate, int totalMark, string description, int minWords, int maxWords) : base(taskId, taskName, dueDate, totalMark)
+    public Assignment(string taskId, string taskName, DateTime dueDate, double totalMark, Unit unit, string description, int minWords, int maxWords) : base(taskId, taskName, dueDate, totalMark, unit)
     {
         _description = description;
         _minWords = minWords;
@@ -33,5 +34,20 @@ public class Assignment : Task
     {
         Console.WriteLine($"Assignment: {TaskName}, Due: {DueDate.ToShortDateString()}, Min Words: {MinWords} Max Words: {MaxWords}");
     }
-    
+
+    public void Submit()
+    {
+        _submitted = true;
+    }
+
+    public bool IsSubmitted()
+    {
+        if (_submitted)
+        {
+            return true;
+        }
+        return false;
+    }
+
+
 }

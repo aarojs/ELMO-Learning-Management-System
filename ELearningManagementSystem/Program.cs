@@ -3,19 +3,6 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        //Testing things out
-        List<Task> tasks = new List<Task>();
-
-        // Assignment assignment = new Assignment()
-
-        foreach (Task task in tasks)
-        {
-            task.DisplayTaskInfo();  // Polymorphic call
-        }
-
-
-        //Create a Command class????
-
         //Creating instances of Managers to pass to the DataSeeder
         //These instaces will be shared to Admin, and Teacher
         //Using dependency injection due to issues that stemmed from having multiple instances of managers between Main, and in Admin/Teacher classes
@@ -28,18 +15,23 @@ public class Program
         DataSeeder.Seed(userManager, degreeManager, unitManager, taskManager);
 
         //Creating login Manager 
-        LoginManager loginManager = new LoginManager();
+        LoginManager loginManager = new LoginManager(userManager);
         User user = loginManager.Login();
 
         //Inject Manager dependencies
         //This is a type pattern match which checks type, and declares a new variable
+        //PolyMorphism here???
         if (user is Admin admin)
         {
             admin.SetManagers(userManager, degreeManager, unitManager, taskManager);
         }
         else if (user is Teacher teacher)
         {
-            teacher.SetTaskManager(taskManager);
+            teacher.SetManagers(taskManager, unitManager, userManager);
+        }
+        else if (user is Student student)
+        {
+            student.SetManagers(taskManager, unitManager);
         }
 
         if (user != null)

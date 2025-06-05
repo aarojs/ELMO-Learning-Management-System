@@ -1,9 +1,17 @@
 namespace ELearning;
 
+//Controlls and manages logic for Degree
 public class DegreeManager
 {
+    private UnitManager _unitManager;
     private List<Degree> _degrees = new List<Degree>();
 
+    public DegreeManager(UnitManager unitManager)
+    {
+        _unitManager = unitManager;
+    }
+
+    //Create new Degree and add to the Degree Manager's list of degrees
     public void CreateDegree()
     {
         Console.WriteLine("Create DegreeID");
@@ -16,10 +24,10 @@ public class DegreeManager
 
         AddDegree(newDegree);
         Console.WriteLine($"Degree added successfully.");
-        Console.WriteLine($"ID: {newDegree.DegreeId}");
-        Console.WriteLine($"Degree name: {newDegree.DegreeName}");
+        newDegree.GetDegreeInfo();
     }
 
+    //Used to add new degree to DegreeManager's list
     public void AddDegree(Degree degree)
     {
         if (degree == null)
@@ -36,20 +44,19 @@ public class DegreeManager
                 return;
             }
         }
-
         _degrees.Add(degree);
-    
     }
 
+    //Print all degrees
     public void ViewAllDegrees()
     {
         foreach (Degree d in _degrees)
         {
-            Console.WriteLine($"ID: {d.DegreeId}");
-            Console.WriteLine($"Degree name: {d.DegreeName}\n");
+            d.GetDegreeInfo();
         }
     }
 
+    //Used to add a unit to a degree's list of units.
     public void AddUnitsToDegree(Degree degree, Unit unit)
     {
         if (degree == null || unit == null)
@@ -69,6 +76,7 @@ public class DegreeManager
         }
     }
 
+    //Will remove a unit from a degree's list of units
     public void RemoveUnit(Degree degree, Unit unit)
     {
         if (degree == null || unit == null)
@@ -87,16 +95,17 @@ public class DegreeManager
         }
     }
 
+    //Print all units within a degree
     public void ViewUnitsInDegree(Degree degree)
     {
         foreach (Unit u in degree.Units)
         {
-            Console.WriteLine($"ID: {u.UnitCode}");
-            Console.WriteLine($"Unit Name: {u.UnitTitle}\n");
+            u.GetUnitInfo();
         }
-
     }
 
+    //Enrol a student in a degree
+    //This uses the UnitManager to ensure the student is also enrolled in the units with the degree.
     public void EnrolStudent(Degree degree, Student student)
     {
         if (degree == null || student == null)
@@ -108,7 +117,13 @@ public class DegreeManager
         if (!degree.Students.Contains(student))
         {
             degree.AddStudent(student);
-            Console.WriteLine($"Student {student.FirstName} {student.LastName} added to {degree.DegreeId}");
+            student.Degree = degree;
+            //Use UnitManager to ensure All of the units within the degree are also added to the Students 'Unit' list
+            foreach (Unit unit in degree.Units)
+            {
+                _unitManager.EnrolStudent(unit, student);
+            }
+            Console.WriteLine($"Student: {student.GetName} added to {degree.DegreeId}");
         }
         else
         {
@@ -116,6 +131,7 @@ public class DegreeManager
         }
     }
 
+    //Remove student from a degree, and ensure units are also removed
     public void UnenrolStudent(Degree degree, Student student)
     {
         if (degree == null || student == null)
@@ -127,7 +143,7 @@ public class DegreeManager
         if (!degree.Students.Contains(student))
         {
             degree.RemoveStudent(student);
-            Console.WriteLine($"Student {student.FirstName} {student.LastName} removed from {degree.DegreeId}");
+            Console.WriteLine($"Student: {student.GetName} removed from {degree.DegreeId}");
         }
         else
         {
@@ -135,22 +151,16 @@ public class DegreeManager
         }
     }
 
+    //Print all students within a Degree's list of enrolled students
     public void ViewStudentsEnrolledInDegree(Degree degree)
     {
         foreach (Student s in degree.Students)
         {
-            Console.WriteLine($"ID: {s.UserId}");
-            Console.WriteLine($"First Name: {s.FirstName}");
-            Console.WriteLine($"Last Name: {s.LastName}");
+            s.GetUserInfo();
         }
-
     }
 
-    public void RemoveDegree(Degree degree)
-    {
-
-    }
-
+    //Returns a degree given a valid Degree ID
     public Degree FindDegree(string id)
     {
         foreach (Degree d in _degrees)
@@ -161,7 +171,5 @@ public class DegreeManager
             }
         }
         return null;
-
     }
-    
 }

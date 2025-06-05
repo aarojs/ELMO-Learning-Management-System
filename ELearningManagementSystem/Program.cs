@@ -7,8 +7,8 @@ public class Program
         //These instaces will be shared to Admin, and Teacher
         //Using dependency injection due to issues that stemmed from having multiple instances of managers between Main, and in Admin/Teacher classes
         UserManager userManager = new UserManager();
-        DegreeManager degreeManager = new DegreeManager();
         UnitManager unitManager = new UnitManager();
+        DegreeManager degreeManager = new DegreeManager(unitManager);
         TaskManager taskManager = new TaskManager();
 
         //Call DataSeeder to populate Users, Degrees, Units and Tasks
@@ -16,25 +16,28 @@ public class Program
 
         //Creating login Manager 
         LoginManager loginManager = new LoginManager(userManager);
-        User user = loginManager.Login();
 
-        //Inject Manager dependencies
-        //This is a type pattern match which checks type, and declares a new variable
-        //PolyMorphism here???
-        if (user is Admin admin)
+        //Program Main loop.
+        while (true)
         {
-            admin.SetManagers(userManager, degreeManager, unitManager, taskManager);
-        }
-        else if (user is Teacher teacher)
-        {
-            teacher.SetManagers(taskManager, unitManager, userManager);
-        }
-        else if (user is Student student)
-        {
-            student.SetManagers(taskManager, unitManager);
-        }
+            User user = loginManager.Login();
 
-        if (user != null)
+            //Inject Manager dependencies
+            //This is a type pattern match which checks type, and declares a new variable
+            if (user is Admin admin)
+            {
+                admin.SetManagers(userManager, degreeManager, unitManager, taskManager);
+            }
+            else if (user is Teacher teacher)
+            {
+                teacher.SetManagers(taskManager, unitManager, userManager);
+            }
+            else if (user is Student student)
+            {
+                student.SetManagers(taskManager, unitManager);
+            }
+
+            if (user != null)
             {
                 //Will use the correct menu depending on what kind of user
                 user.MainMenu();
@@ -42,7 +45,12 @@ public class Program
             else
             {
                 Console.WriteLine("Exiting system");
+                break;
             }
+            //Loop user's main menu until logout
+            Console.WriteLine("You have been successfully logged out");
+        }
+        
 
     }
 }

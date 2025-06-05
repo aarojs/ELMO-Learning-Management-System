@@ -1,5 +1,6 @@
 namespace ELearning;
 
+//Handles Main Menu and Sub-Menu logic for Admin
 public class AdminMenu
 {
     private Admin _admin;
@@ -9,19 +10,18 @@ public class AdminMenu
         _admin = admin;
     }
 
+    //Main Menu
     public void ShowMenu()
     {
-
-        bool finished = false;
-
-        while (!finished)
+        _admin.IsLoggedIn = true;
+        while (_admin.IsLoggedIn)
         {
             Console.WriteLine("Admin menu ");
             Console.WriteLine("1. Manage Users");
             Console.WriteLine("2. Manage Degree");
             Console.WriteLine("3. Mangage Units");
             Console.WriteLine("4. Logout");
-            String input = Console.ReadLine();
+            string input = Console.ReadLine();
 
             switch (input)
             {
@@ -35,7 +35,8 @@ public class AdminMenu
                     ManageUnits();
                     break;
                 case "4":
-                    return;
+                    _admin.Logout();
+                    break;
                 default:
                     Console.WriteLine("Invalid input.");
                     break;
@@ -52,8 +53,7 @@ public class AdminMenu
             Console.WriteLine("Manage Users Menu");
             Console.WriteLine("1. Create a User");
             Console.WriteLine("2. View All Users");
-            Console.WriteLine("3. Remove a User");
-            Console.WriteLine("4. Return to Main Menu");
+            Console.WriteLine("3. Return to Main Menu");
             string userChoice = Console.ReadLine();
 
             switch (userChoice)
@@ -65,23 +65,12 @@ public class AdminMenu
                     _admin.UserManager.ViewAllUsers();
                     break;
                 case "3":
-                    Console.WriteLine("Enter UserID to remove: ");
-                    string userToDelete = Console.ReadLine();
-                    _admin.UserManager.RemoveUserById(userToDelete);
-                    break;
-                case "4":
                     return;
                 default:
                     Console.WriteLine("Invalid selection");
                     break;
             }
         }
-    }
-
-    //Manage user option - Select a specific user. If you get time
-    public void SelectUser()
-    {
-
     }
 
     //Main Menu Option 2
@@ -142,8 +131,7 @@ public class AdminMenu
             Console.WriteLine("4. View Units in Degree");
             Console.WriteLine("5. Unenrol a student from degree");
             Console.WriteLine("6. Remove a unit from degree");
-            Console.WriteLine("7. Remove degree from system");
-            Console.WriteLine("8. Return to Previous menu");
+            Console.WriteLine("7. Return to Previous menu");
             string choice = Console.ReadLine();
 
             switch (choice)
@@ -152,13 +140,14 @@ public class AdminMenu
                     Console.WriteLine("Enter a Unit ID");
                     string unitId = Console.ReadLine();
                     Unit unit = _admin.UnitManager.FindUnit(unitId);
-                    if (unitId == null)
+                    if (unit != null)
                     {
-                        Console.WriteLine("Unit not found.");
-                        return;
+                        _admin.DegreeManager.AddUnitsToDegree(degree, unit);
+                        break;
                     }
-                    _admin.DegreeManager.AddUnitsToDegree(degree, unit);
-                    break;
+                    Console.WriteLine("Unit not found.");
+                    return; 
+                    
                 case "2":
                     Console.WriteLine("Enter StudentID");
                     string studentId = Console.ReadLine();
@@ -169,13 +158,16 @@ public class AdminMenu
                         break;
                     }
                     Console.WriteLine("Student not found");
-                    return;
+                    return; 
+
                 case "3":
                     _admin.DegreeManager.ViewStudentsEnrolledInDegree(degree);
                     break;
+
                 case "4":
                     _admin.DegreeManager.ViewUnitsInDegree(degree);
                     break;
+
                 case "5":
                     Console.WriteLine("Enter Student ID");
                     string studId = Console.ReadLine();
@@ -189,25 +181,23 @@ public class AdminMenu
                     }
                     Console.WriteLine("Student not found");
                     return;
+
+                    
                 case "6":
                     Console.WriteLine("Enter Unit Code");
                     string unitCode = Console.ReadLine();
 
                     Unit testUnit = _admin.UnitManager.FindUnit(unitCode);
 
-                    if (testUnit == null)
+                    if (testUnit != null)
                     {
-                        Console.WriteLine("Unit not found");
-                        return;
+                        _admin.DegreeManager.RemoveUnit(degree, testUnit);
+                        break;
                     }
-                    _admin.DegreeManager.RemoveUnit(degree, testUnit);
-                    break;
-                case "7":
-                    Console.WriteLine("Are you sure? Enter admin username and password to confirm");
-                    _admin.DegreeManager.RemoveDegree(degree);
-                    break;
+                    Console.WriteLine("Unit not found");
+                    return;
 
-                case "8":
+                case "7":
                     return;
                 default:
                     Console.WriteLine("Invalid selection");
@@ -276,8 +266,7 @@ public class AdminMenu
             Console.WriteLine("5. View Teachers assigned to Unit");
             Console.WriteLine("6. Unenrol student from Unit");
             Console.WriteLine("7. Unassign teacher from Unit");
-            Console.WriteLine("8. Remove Unit");
-            Console.WriteLine("9. Return to previous menu");
+            Console.WriteLine("8. Return to previous menu");
             string choice = Console.ReadLine();
 
             switch (choice)
@@ -346,9 +335,6 @@ public class AdminMenu
                     Console.WriteLine("Teacher not found");
                     return;
                 case "8":
-                    _admin.UnitManager.RemoveUnit(unit);
-                    break;
-                case "9":
                     return;
                 default:
                     Console.WriteLine("Invalid selection");
@@ -368,8 +354,7 @@ public class AdminMenu
             Console.WriteLine($"Managing tasks for {unit.UnitTitle}");
             Console.WriteLine("1. View all tasks for unit");
             Console.WriteLine("2. Add task to unit");
-            Console.WriteLine("3. Manage task");
-            Console.WriteLine("4. Return to previous menu");
+            Console.WriteLine("3. Return to previous menu");
             string choice = Console.ReadLine();
 
             switch (choice)
@@ -381,32 +366,12 @@ public class AdminMenu
                     _admin.TaskManager.CreateTask(unit);
                     break;
                 case "3":
-                    Console.WriteLine("Enter task ID: ");
-                    string taskId = Console.ReadLine();
-
-                    Task task = _admin.TaskManager.FindTask(taskId);
-
-                    if (task == null)
-                    {
-                        Console.WriteLine("Cannot find task");
-                        return;
-                    }
-                    SelectTask(unit, task);
-                    break;
-                case "4":
                     return;
                 default:
                     Console.WriteLine("Invalid selection");
                     break;
             }
         }
-    }
-
-    //Select Task submenu - Manage and edit a task
-    public void SelectTask(Unit unit, Task task)
-    {
-
-
     }
 
 }

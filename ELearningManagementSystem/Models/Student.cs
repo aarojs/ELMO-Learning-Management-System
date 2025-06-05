@@ -30,7 +30,6 @@ public class Student : User
         get { return _unitManager; }
     }
 
-    //Will prompt for degree later, should a student need a degree to be created?
     public Student(string id, string password, string firstName, string lastName, string email) : base(id, password, firstName, lastName, email)
     {
         _enrolledUnits = new List<Unit>();
@@ -42,6 +41,19 @@ public class Student : User
     {
         _taskManager = taskManager;
         _unitManager = unitManager;
+    }
+
+    public override void GetUserInfo()
+    {
+        base.GetUserInfo();
+        if (Degree != null)
+        {
+            Console.WriteLine($"Degree: {Degree.DegreeName}\n");
+        }
+        else
+        {
+            Console.WriteLine("Not enrolled in degree.\n");
+        }
     }
     public override void MainMenu()
     {
@@ -75,9 +87,7 @@ public class Student : User
     {
         foreach (Task task in _submittedTasks)
         {
-            Console.WriteLine($"{task.ParentUnit.UnitTitle} - {task.TaskName}");
-            Console.WriteLine($"Due date: {task.DueDate}");
-            Console.WriteLine($"Total marks: {task.TotalMark}");
+            task.DisplayTaskInfo();
         }
     }
 
@@ -85,9 +95,7 @@ public class Student : User
     {
         foreach (Task task in _pendingTasks)
         {
-            Console.WriteLine($"{task.ParentUnit.UnitTitle} - {task.TaskName}");
-            Console.WriteLine($"Due date: {task.DueDate}");
-            Console.WriteLine($"Total marks: {task.TotalMark}");
+            task.DisplayTaskInfo();
         }
     }
 

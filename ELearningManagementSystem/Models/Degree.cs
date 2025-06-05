@@ -38,6 +38,12 @@ public class Degree
         _students = new List<Student>();
     }
 
+    public void GetDegreeInfo()
+    {
+        Console.WriteLine($"Degree ID: {DegreeId}");
+        Console.WriteLine($"Name: {DegreeName}\n");
+    }
+
     public void AddUnit(Unit unit)
     {
         if (!_units.Contains(unit))

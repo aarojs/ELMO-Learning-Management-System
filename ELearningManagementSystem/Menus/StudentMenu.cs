@@ -10,9 +10,8 @@ public class StudentMenu
     }
     public void ShowMenu()
     {
-        bool finished = false;
-
-        while (!finished)
+        _student.IsLoggedIn = true;
+        while (_student.IsLoggedIn)
         {
             Console.WriteLine("Student Menu:");
             Console.WriteLine("1. View Units");
@@ -29,14 +28,13 @@ public class StudentMenu
                     _student.ChangePassword();
                     break;
                 case "3":
-                    return;
+                    _student.Logout();
+                    break;
                 default:
                     Console.WriteLine("Invalid selection");
                     break;
             }
-
         }
-
     }
 
     public void UnitMenu()
@@ -63,14 +61,13 @@ public class StudentMenu
                     Console.WriteLine("Enter Unit ID");
                     string unitId = Console.ReadLine();
                     Unit unit = _student.UnitManager.FindUnit(unitId);
+                    
                     if (unit != null && _student.EnrolledUnits.Contains(unit))
                     {
                         ManageUnit(unit);
+                        break;
                     }
-                    else
-                    {
-                        Console.WriteLine("Unit not found");
-                    }
+                    Console.WriteLine("Unit not found");
                     break;
                 case "2":
                     return;
@@ -93,39 +90,48 @@ public class StudentMenu
             switch (choice)
             {
                 case "1":
-                    if (_student.PendingTasks.Any())
+                    bool tasksPending = false;
+
+                    foreach (Task task in _student.PendingTasks)
                     {
-                        foreach (Task task in _student.PendingTasks)
+                        if (unit == task.ParentUnit)
                         {
-                            if (unit == task.ParentUnit)
-                            {
-                                Console.WriteLine($"Task ID: {task.TaskId}: ");
-                                Console.WriteLine($"{task.TaskName}\n");
-                            }
+                            task.DisplayTaskInfo();
+                            tasksPending = true;
                         }
                     }
-                    else
+                    if (!tasksPending)
                     {
                         Console.WriteLine("No pending tasks for this unit");
                     }
                     break;
+
                 case "2":
-                    if (_student.SubmittedTasks.Any())
+                    bool submittedTasks = false;
+
+                    foreach (Task task in _student.SubmittedTasks)
                     {
-                        foreach (Task task in _student.SubmittedTasks)
+                        if (unit == task.ParentUnit)
                         {
-                            if (unit == task.ParentUnit)
+                            task.DisplayTaskInfo();
+                            Console.WriteLine($"Grade: {task.GetGrade()}");
+                            if (task.Graded)
                             {
-                                Console.WriteLine($"Task ID: {task.TaskId}: ");
-                                Console.WriteLine($"{task.TaskName}\n");
+                                Console.WriteLine("Task has been graded");
                             }
+                            else
+                            {
+                                Console.WriteLine("Task has not been graded.");
+                            }
+                            submittedTasks = true;
                         }
                     }
-                    else
+                    if (!submittedTasks)
                     {
                         Console.WriteLine("No submitted tasks for this unit");
                     }
                     break;
+
                 case "3":
                     Console.WriteLine("Enter task ID");
                     string taskId = Console.ReadLine();
@@ -149,9 +155,6 @@ public class StudentMenu
                 case "4":
                     return;
             }
-
         }
-
     }
-
 }

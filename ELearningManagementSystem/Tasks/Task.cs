@@ -10,7 +10,6 @@ public abstract class Task : IGradable
     private bool _graded;
     private Unit _parentUnit;
 
-    //A lot of these you have access to through the methods. Best approach?
     public string TaskId
     {
         get { return _taskId; }
@@ -56,35 +55,43 @@ public abstract class Task : IGradable
         _parentUnit = parentUnit;
     }
 
-    public abstract void DisplayTaskInfo(); // have not even used this once. !!!
-
-    //For Task information display and debugging. Use this?
-    public override string ToString()
+    public virtual void DisplayTaskInfo()
     {
-        return $"{TaskName} (ID: {TaskId}) - Due {DueDate.ToShortDateString()} - Worth {TotalMark} marks";
+        Console.WriteLine($"Task ID: {TaskId}");
+        Console.WriteLine($"Task name: {TaskName}");
+        Console.WriteLine($"Due: {DueDate.ToShortDateString()}");
     }
 
-    public void GradeTask(double mark)
+
+    public bool GradeTask(double mark)
     {
-        if (mark >= 0)
+        if (mark >= 0 && mark <= _totalMark)
         {
             _achievedMark = mark;
+            _graded = true;
+            return true;
         }
-        Console.WriteLine("Mark cannot be negative");
+        else
+        {
+            return false;
+        }
     }
 
     public double GetGrade()
     {
-        if (_achievedMark >= 0)
+        if (_graded)
         {
             return _achievedMark;
         }
-        Console.WriteLine("Task has not been graded.");
-        return 0;
+        else
+        {
+            return 0;
+        }
+        
     }
 
     public bool IsGraded()
     {
-        return _achievedMark >= 0;
+        return _graded;
     }
 }

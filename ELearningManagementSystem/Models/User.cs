@@ -7,6 +7,7 @@ public abstract class User
     private string _firstName;
     private string _lastName;
     private string _email;
+    private bool _isLoggedIn;
 
     public string UserId
     {
@@ -36,6 +37,11 @@ public abstract class User
         get { return _email; }
         set { _email = value; }
     }
+    public bool IsLoggedIn
+    {
+        get { return _isLoggedIn; }
+        set { _isLoggedIn = value; }
+    }
 
     public User(string id, string password, string firstName, string lastName, string email)
     {
@@ -44,6 +50,18 @@ public abstract class User
         _firstName = firstName;
         _lastName = lastName;
         _email = email;
+    }
+
+    public virtual void GetUserInfo()
+    {
+        Console.WriteLine($"ID: {UserId}");
+        Console.WriteLine($"Name: {FirstName} {LastName}");
+        Console.WriteLine($"Email: {Email}");
+    }
+
+    public virtual void GetName()
+    {
+        Console.WriteLine($"{FirstName} {LastName}");
     }
 
     //Student and teacher will have their own custom Main menu implementations 
@@ -68,6 +86,11 @@ public abstract class User
             _password = newPassword;
             Console.WriteLine("Password updated successfully");
         }
+    }
+
+    public void Logout()
+    {
+        _isLoggedIn = false;
     }
 
 }

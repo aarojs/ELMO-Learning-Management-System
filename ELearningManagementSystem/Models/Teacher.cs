@@ -2,14 +2,6 @@ namespace ELearning;
 
 public class Teacher : User
 {
-
-    public enum TeacherRole
-    {
-        UnitConvenor,
-        Lecturer,
-        Tutor
-    }
-
     private TeacherRole _role;
     private List<Unit> _teachingUnits;
 
@@ -27,7 +19,7 @@ public class Teacher : User
 
     public List<Unit> TeachingUnits
     {
-        get { return _teachingUnits; } //fix
+        get { return _teachingUnits; }
     }
     public TaskManager TaskManager
     {
@@ -55,6 +47,12 @@ public class Teacher : User
         menu.ShowMenu();
     }
 
+    public override void GetUserInfo()
+    {
+        base.GetUserInfo();
+        Console.WriteLine($"Role: {Role}\n");
+    }
+
     //Assign passed in manager instance
     public void SetManagers(TaskManager taskManager, UnitManager unitManager, UserManager userManager)
     {
@@ -71,6 +69,13 @@ public class Teacher : User
         }
     }
 
+    public void RemoveUnit(Unit unit)
+    {
+        if (_teachingUnits.Contains(unit))
+        {
+            _teachingUnits.Remove(unit);
+        }
+    }
 
     
     

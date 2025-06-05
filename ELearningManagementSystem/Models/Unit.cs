@@ -31,9 +31,7 @@ public class Unit
         get { return _tasks; }
     }
 
-    //Different constructors for different kinds of new Units?
-    //Sometimes they might be added with a convenor, sometimes not? 
-    //This first one will expect a unitCode and unitName and Convenor, and make the lists.
+
     public Unit(string unitCode, string UnitTitle)
     {
         _unitCode = unitCode;
@@ -42,6 +40,12 @@ public class Unit
         _teachers = new List<Teacher>();
         _enrolledStudents = new List<Student>();
         _tasks = new List<Task>();
+    }
+
+    public void GetUnitInfo()
+    {
+        Console.WriteLine($"Unit ID: {UnitCode}");
+        Console.WriteLine($"Name: {UnitTitle}\n");
     }
 
     public void AddStudent(Student student)

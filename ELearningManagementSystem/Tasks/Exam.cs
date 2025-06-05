@@ -22,15 +22,20 @@ public class Exam : Task
         set { _examLocation = value; }
     }
 
-    public Exam(string taskId, string taskName, DateTime dueDate, double totalMark, Unit unit, int examDuration, string examLocation) : base(taskId, taskName, dueDate, totalMark, unit)
+    public Exam(string taskId, string taskName, DateTime dueDate, double totalMark, Unit unit, int examDuration, string examLocation, bool isOpenBook) : base(taskId, taskName, dueDate, totalMark, unit)
     {
         _examLocation = examLocation;
         _examDurationMins = examDuration;
+        _isOpenBook = isOpenBook;
+        
     }
 
     public override void DisplayTaskInfo()
     {
-        Console.WriteLine($"Exam: {TaskName}, Date: {DueDate} Duration: {ExamDurationMins} mins, Open Book: {IsOpenBook}");
+        base.DisplayTaskInfo();
+        Console.WriteLine($"Duration (mins): {ExamDurationMins}");
+        Console.WriteLine($"Location: {ExamLocation}");
+        Console.WriteLine($"Open book: {IsOpenBook}\n");
     }
 
 

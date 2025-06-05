@@ -32,7 +32,9 @@ public class Assignment : Task, ISubmittable
 
     public override void DisplayTaskInfo()
     {
-        Console.WriteLine($"Assignment: {TaskName}, Due: {DueDate.ToShortDateString()}, Min Words: {MinWords} Max Words: {MaxWords}");
+        base.DisplayTaskInfo();
+        Console.WriteLine($"Description: {Description}");
+        Console.WriteLine($"Min words: {MinWords}, Max words: {MaxWords}\n");
     }
 
     public void Submit()

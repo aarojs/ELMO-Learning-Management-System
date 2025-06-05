@@ -1,9 +1,11 @@
 namespace ELearning;
 
+//Controls and manages logic for units
 public class UnitManager
 {
     private List<Unit> _units = new List<Unit>();
 
+    //Create a new unit, and adds to the list of units
     public void CreateUnit()
     {
         Console.WriteLine("Create Unit ID");
@@ -38,18 +40,17 @@ public class UnitManager
         _units.Add(unit);
     }
 
+    //Print all units
     public void ViewAllUnits()
     {
         foreach (Unit u in _units)
         {
-            Console.WriteLine($"ID: {u.UnitCode}");
-            Console.WriteLine($"Unit Name: {u.UnitTitle}\n");
+            u.GetUnitInfo();
         }
     }
 
 
-
-
+    //Enrol student in Unit, ensuring all tasks within a unit are added to the students list of tasks
     public void EnrolStudent(Unit unit, Student student)
     {
         if (unit == null || student == null)
@@ -60,8 +61,8 @@ public class UnitManager
         if (!unit.EnrolledStudents.Contains(student))
         {
             unit.AddStudent(student);
-            
-            Console.WriteLine($"Student {student.FirstName} {student.LastName} added to {unit.UnitCode}");
+
+            Console.WriteLine($"Student: {student.GetName} added to {unit.UnitCode}");
         }
         if (!student.EnrolledUnits.Contains(unit))
         {
@@ -71,7 +72,7 @@ public class UnitManager
             {
                 student.AddPendingTask(task);
             }
-            Console.WriteLine($"Unit successfully added to Student's enrollment");
+            Console.WriteLine($"Unit {unit.UnitTitle} successfully added to Student's enrollment");
         }
         else
         {
@@ -79,6 +80,7 @@ public class UnitManager
         }
     }
 
+    //Unenrol student, removing it from their list of units along with its associated tasks
     public void UnenrolStudent(Unit unit, Student student)
     {
         if (unit == null || student == null)
@@ -90,7 +92,7 @@ public class UnitManager
         if (!unit.EnrolledStudents.Contains(student))
         {
             unit.RemoveStudent(student);
-            Console.WriteLine($"Student {student.FirstName} {student.LastName} removed from {unit.UnitTitle}");
+            Console.WriteLine($"Student: {student.GetName} removed from {unit.UnitTitle}");
         }
         if (!student.EnrolledUnits.Contains(unit))
         {
@@ -112,16 +114,17 @@ public class UnitManager
         }
     }
 
+    //Print all students enrolled in a unit
     public void ViewStudents(Unit unit)
     {
         foreach (Student s in unit.EnrolledStudents)
         {
-            Console.WriteLine($"ID: {s.UserId}");
-            Console.WriteLine($"First Name: {s.FirstName}");
-            Console.WriteLine($"Last Name: {s.LastName}");
+            s.GetUserInfo();
         }
 
     }
+
+    //Assign a teacher to the unit, adding it to the unit's list of teachers, and the teacher's list of units
     public void AssignTeacher(Unit unit, Teacher teacher)
     {
         if (unit == null || teacher == null)
@@ -133,7 +136,7 @@ public class UnitManager
         if (!unit.Teachers.Contains(teacher))
         {
             unit.AddTeacher(teacher);
-            Console.WriteLine($"Teacher {teacher.FirstName} {teacher.LastName} assigned to unit {unit.UnitCode}");
+            Console.WriteLine($"Teacher: {teacher.GetName} assigned to unit {unit.UnitCode}");
         }
         if (!teacher.TeachingUnits.Contains(unit))
         {
@@ -146,6 +149,7 @@ public class UnitManager
         }
     }
 
+    //Removes a teacher from the list of units, and removes the unit from the teacher's list
     public void UnassignTeacher(Unit unit, Teacher teacher)
     {
         if (unit == null || teacher == null)
@@ -157,7 +161,12 @@ public class UnitManager
         if (!unit.Teachers.Contains(teacher))
         {
             unit.RemoveTeacher(teacher);
-            Console.WriteLine($"Teacher {teacher.FirstName} {teacher.LastName} removed from {unit.UnitCode}");
+            Console.WriteLine($"Teacher: {teacher.GetName} removed from {unit.UnitCode}");
+        }
+        if (teacher.TeachingUnits.Contains(unit))
+        {
+            teacher.RemoveUnit(unit);
+            Console.WriteLine("Unit successfully removed from Teacher's unit list.");
         }
         else
         {
@@ -165,23 +174,17 @@ public class UnitManager
         }
     }
 
+    //View all assigned teachers for a given unit
     public void ViewTeachers(Unit unit)
     {
         foreach (Teacher t in unit.Teachers)
         {
-            Console.WriteLine($"ID: {t.UserId}");
-            Console.WriteLine($"First Name: {t.FirstName}");
-            Console.WriteLine($"Last Name: {t.LastName} ");
-            Console.WriteLine($"Role: {t.Role}");
+            t.GetUserInfo();
         }
 
     }
 
-    public void RemoveUnit(Unit unit)
-    {
-
-    }
-
+    //Find a unit given a valid unit ID
     public Unit FindUnit(string unitCode)
     {
         foreach (Unit u in _units)

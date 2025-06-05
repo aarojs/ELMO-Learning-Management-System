@@ -17,14 +17,17 @@ public class Quiz : Task, ISubmittable
         set { _isOnline = value; }
     }
 
-    public Quiz(string taskId, string taskName, DateTime dueDate, double totalMark, Unit unit, int numberOfQuestions) : base(taskId, taskName, dueDate, totalMark, unit)
+    public Quiz(string taskId, string taskName, DateTime dueDate, double totalMark, Unit unit, int numberOfQuestions, bool isOnline) : base(taskId, taskName, dueDate, totalMark, unit)
     {
         _numberOfQuestions = numberOfQuestions;
+        _isOnline = isOnline;
     }
 
     public override void DisplayTaskInfo()
     {
-        Console.WriteLine($"Quiz: {TaskName}, Due: {DueDate.ToShortDateString()}, Questions: {NumberOfQuestions}");
+        base.DisplayTaskInfo();
+        Console.WriteLine($"Number of questions: {NumberOfQuestions}");
+        Console.WriteLine($"Online quiz: {IsOnline}\n");
     }
 
     public void Submit()

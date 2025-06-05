@@ -1,13 +1,11 @@
 namespace ELearning;
 
-//Similarly to Task Manager, I want an Admin to have the ability to create teachers and students 
-
+//Controls and manages logic for users
 public class UserManager
 {
-
     private List<User> _users = new List<User>();
 
-
+    //Create a new user
     public void CreateUser()
     {
         Console.WriteLine("Choose user type: 1. Student, 2. Teacher");
@@ -53,13 +51,15 @@ public class UserManager
                 newUser = new Teacher(userId, password, firstName, lastName, email);
                 break;
             default:
-                throw new ArgumentException("Invalid role chosen. Are you an admin?");
+                Console.WriteLine("Are you an Admin?");
+                return;
         }
 
         AddUser(newUser);
         Console.WriteLine($"User created successfully. ID: {newUser.UserId}");
     }
 
+    //Add user to user manager's list of users
     public void AddUser(User user)
     {
         if (user == null)
@@ -83,7 +83,6 @@ public class UserManager
             Console.WriteLine($"A user with the ID {user.UserId} already exists. Cannot create user");
             return;
         }
-
         _users.Add(user);
     }
 
@@ -107,20 +106,17 @@ public class UserManager
         return $"{userId}@learning.com";
     }
 
-    public void RemoveUserById(string userId)
-    {
 
-    }
-
+    //Print all users
     public void ViewAllUsers()
     {
         foreach (User u in _users)
         {
-            Console.WriteLine($"UserID: {u.UserId}");
-            Console.WriteLine($"Name: {u.FirstName} {u.LastName}");
+            u.GetUserInfo();
         }
     }
 
+    //Find a user given a valid user ID
     public User FindUser(string id)
     {
         foreach (User u in _users)
@@ -132,5 +128,4 @@ public class UserManager
         }
         return null;
     }
-
 }

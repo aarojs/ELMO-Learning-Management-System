@@ -84,7 +84,7 @@ public class DegreeManager
             Console.WriteLine("Cannot remove unit");
         }
 
-        if (!degree.Units.Contains(unit))
+        if (degree.Units.Contains(unit))
         {
             degree.RemoveUnit(unit);
             Console.WriteLine($"Unit {unit.UnitCode} removed from {degree.DegreeId}");
@@ -123,7 +123,7 @@ public class DegreeManager
             {
                 _unitManager.EnrolStudent(unit, student);
             }
-            Console.WriteLine($"Student: {student.GetName} added to {degree.DegreeId}");
+            Console.WriteLine($"Student: {student.GetName()} added to {degree.DegreeId}");
         }
         else
         {
@@ -140,10 +140,11 @@ public class DegreeManager
             return;
         }
 
-        if (!degree.Students.Contains(student))
+        if (degree.Students.Contains(student))
         {
             degree.RemoveStudent(student);
-            Console.WriteLine($"Student: {student.GetName} removed from {degree.DegreeId}");
+            student.Degree = null;
+            Console.WriteLine($"Student: {student.GetName()} removed from {degree.DegreeId}");
         }
         else
         {

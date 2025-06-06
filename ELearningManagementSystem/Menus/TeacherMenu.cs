@@ -16,10 +16,11 @@ public class TeacherMenu
         _teacher.IsLoggedIn = true;
         while (_teacher.IsLoggedIn)
         {
-            Console.WriteLine("Teacher Menu:");
+            Console.WriteLine("\nTeacher Menu:");
+            Console.WriteLine($"Welcome {_teacher.GetName()}");
             Console.WriteLine("1. Manage Units");
             Console.WriteLine("2. Change Password");
-            Console.WriteLine("3. Logout");
+            Console.WriteLine("3. Logout\n");
             string input = Console.ReadLine();
 
             switch (input)
@@ -54,8 +55,8 @@ public class TeacherMenu
             bool finished = false;
             while (!finished)
             {
-                Console.WriteLine("1. Select Unit");
-                Console.WriteLine("2. Return to previous menu");
+                Console.WriteLine("\n1. Select Unit");
+                Console.WriteLine("2. Return to previous menu\n");
                 string choice = Console.ReadLine();
 
                 switch (choice)
@@ -96,10 +97,10 @@ public class TeacherMenu
         while (!finished)
         {
             unit.GetUnitInfo();
-            Console.WriteLine("1. Manage Students");
+            Console.WriteLine("\n1. Manage Students");
             Console.WriteLine("2. View tasks for unit");
             Console.WriteLine("3. Add task to unit");
-            Console.WriteLine("4. Return to Previous Menu");
+            Console.WriteLine("4. Return to Previous Menu\n");
             string choice = Console.ReadLine();
 
             switch (choice)
@@ -135,8 +136,8 @@ public class TeacherMenu
                 {
                     s.GetUserInfo();
                 }
-                Console.WriteLine("1. Select student");
-                Console.WriteLine("2. Return to previous menu");
+                Console.WriteLine("\n1. Select student");
+                Console.WriteLine("2. Return to previous menu\n");
                 string choice = Console.ReadLine();
                 switch (choice)
                 {
@@ -176,13 +177,13 @@ public class TeacherMenu
         while (!finished)
         {
 
-            Console.WriteLine($"Task Portal for {student.FirstName} {student.LastName}");
+            Console.WriteLine($"\nTask Portal for {student.FirstName} {student.LastName}");
             Console.WriteLine("1. View Pending Tasks");
             Console.WriteLine("2. View Submitted Tasks");
             Console.WriteLine("3. View Ungraded tasks");
             Console.WriteLine("4. View Graded Tasks");
             Console.WriteLine("5. Grade task");
-            Console.WriteLine("6. Return to previous menu");
+            Console.WriteLine("6. Return to previous menu\n");
             string choice = Console.ReadLine();
 
             switch (choice)
@@ -190,7 +191,7 @@ public class TeacherMenu
                 case "1":
                     if (student.PendingTasks.Any())
                     {
-                        Console.WriteLine($"Pending tasks for {student.GetName}: ");
+                        Console.WriteLine($"Pending tasks for {student.GetName()}: ");
                         foreach (Task task in student.PendingTasks)
                         {
                             task.DisplayTaskInfo();
@@ -206,7 +207,7 @@ public class TeacherMenu
                 case "2":
                     if (student.SubmittedTasks.Any())
                     {
-                        Console.WriteLine($"Submitted tasks for {student.GetName}");
+                        Console.WriteLine($"Submitted tasks for {student.GetName()}");
                         foreach (Task task in student.SubmittedTasks)
                         {
                             task.DisplayTaskInfo();
@@ -219,23 +220,43 @@ public class TeacherMenu
                     break;
 
                 case "3":
+                    Console.WriteLine("Ungraded pending tasks: ");
+                    foreach (Task task in student.PendingTasks)
+                    {
+                        if (!task.Graded)
+                        {
+                            task.DisplayTaskInfo();
+                            Console.WriteLine($"Total Mark {task.TotalMark}\n");
+                        }
+                    }
+                    Console.WriteLine("Ungraded submitted tasks: ");
                     foreach (Task task in student.SubmittedTasks)
                     {
                         if (!task.Graded)
                         {
                             task.DisplayTaskInfo();
-                            Console.WriteLine($"Total Mark {task.TotalMark}");
+                            Console.WriteLine($"Total Mark {task.TotalMark}\n");
                         }
                     }
 
                     break;
                 case "4":
+                    Console.WriteLine("Graded pending tasks (Includes Exams): ");
+                    foreach (Task task in student.PendingTasks)
+                    {
+                        if (task.Graded)
+                        {
+                            task.DisplayTaskInfo();
+                            Console.WriteLine($"Mark {task.AchievedMark} / {task.TotalMark}\n");
+                        }
+                    }
+                    Console.WriteLine("Graded submitted tasks: ");
                     foreach (Task task in student.SubmittedTasks)
                     {
                         if (task.Graded)
                         {
                             task.DisplayTaskInfo();
-                            Console.WriteLine($"Mark {task.AchievedMark} / {task.TotalMark}");
+                            Console.WriteLine($"Mark {task.AchievedMark} / {task.TotalMark}\n");
                         }
                     }
                     break;

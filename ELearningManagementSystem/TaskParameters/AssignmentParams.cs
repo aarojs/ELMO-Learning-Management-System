@@ -1,4 +1,5 @@
 namespace ELearning;
+//Parameter object
 public class AssignmentParams
 {
     public string Description { get; set; }

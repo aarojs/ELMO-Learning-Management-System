@@ -87,7 +87,6 @@ public abstract class Task : IGradable
         {
             return 0;
         }
-        
     }
 
     public bool IsGraded()

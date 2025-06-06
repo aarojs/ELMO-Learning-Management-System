@@ -62,7 +62,7 @@ public class UnitManager
         {
             unit.AddStudent(student);
 
-            Console.WriteLine($"Student: {student.GetName} added to {unit.UnitCode}");
+            Console.WriteLine($"Student: {student.GetName()} added to {unit.UnitCode}");
         }
         if (!student.EnrolledUnits.Contains(unit))
         {
@@ -89,20 +89,20 @@ public class UnitManager
             return;
         }
 
-        if (!unit.EnrolledStudents.Contains(student))
+        if (unit.EnrolledStudents.Contains(student))
         {
             unit.RemoveStudent(student);
-            Console.WriteLine($"Student: {student.GetName} removed from {unit.UnitTitle}");
+            Console.WriteLine($"Student: {student.GetName()} removed from {unit.UnitTitle}");
         }
-        if (!student.EnrolledUnits.Contains(unit))
+        if (student.EnrolledUnits.Contains(unit))
         {
             student.RemoveUnit(unit);
-            //Remove tasks 
-            foreach (Task task in student.PendingTasks)
+            //Remove tasks, iterate over list before removing.
+            foreach (Task task in student.PendingTasks.ToList())
             {
                 student.RemovePendingTask(task);
             }
-            foreach (Task task in student.SubmittedTasks)
+            foreach (Task task in student.SubmittedTasks.ToList())
             {
                 student.RemoveSubmittedTask(task);
             }
@@ -136,7 +136,7 @@ public class UnitManager
         if (!unit.Teachers.Contains(teacher))
         {
             unit.AddTeacher(teacher);
-            Console.WriteLine($"Teacher: {teacher.GetName} assigned to unit {unit.UnitCode}");
+            Console.WriteLine($"Teacher: {teacher.GetName()} assigned to unit {unit.UnitCode}");
         }
         if (!teacher.TeachingUnits.Contains(unit))
         {
@@ -158,10 +158,10 @@ public class UnitManager
             return;
         }
 
-        if (!unit.Teachers.Contains(teacher))
+        if (unit.Teachers.Contains(teacher))
         {
             unit.RemoveTeacher(teacher);
-            Console.WriteLine($"Teacher: {teacher.GetName} removed from {unit.UnitCode}");
+            Console.WriteLine($"Teacher: {teacher.GetName()} removed from {unit.UnitCode}");
         }
         if (teacher.TeachingUnits.Contains(unit))
         {

@@ -57,7 +57,6 @@ public class TaskManager
             }
         }
 
-
         Task newTask = null;
         switch (choice)
         {
@@ -102,7 +101,6 @@ public class TaskManager
                 break;
 
             case "2":
-                Console.WriteLine("Number of Questions: ");
                 int numQ;
                 while (true)
                 {
@@ -177,23 +175,11 @@ public class TaskManager
                 newTask = TaskFactory.CreateExam(taskId, taskName, dueDate, totalMark, unit, ep);
                 break;
         }
-
         if (newTask != null)
         {
-            //Add to TaskManager global task list
-            _tasks.Add(newTask);
-            //Add to specific Unit's internal task list 
-            unit.AddTask(newTask);
-
-            //With the task created for a specific unit, it will now need to be added to the Student's task list
-            foreach (Student student in unit.EnrolledStudents)
-            {
-                student.AddPendingTask(newTask);
-            }
-
-            Console.WriteLine("Task added successfully!\n");
+            AddTasksToUnit(unit, newTask);
             newTask.DisplayTaskInfo();
-        }
+        }  
     }
 
     //Print all tasks
@@ -224,7 +210,7 @@ public class TaskManager
         if (!student.PendingTasks.Contains(task))
         {
             student.AddPendingTask(task);
-            Console.WriteLine($"Task {task.TaskName} assigned to {student.GetName}");
+            Console.WriteLine($"Task {task.TaskName} assigned to {student.GetName()}");
         }
         else
         {
@@ -246,6 +232,11 @@ public class TaskManager
             unit.AddTask(task);
             _tasks.Add(task);
             Console.WriteLine($"{task.TaskName} added to {unit.UnitTitle}");
+            foreach (Student student in unit.EnrolledStudents)
+            {
+                student.AddPendingTask(task);
+                Console.WriteLine($"{task.TaskId} added for {student.GetName()}");
+            }
         }
     }
 }

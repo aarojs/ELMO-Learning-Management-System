@@ -44,11 +44,7 @@ public class Assignment : Task, ISubmittable
 
     public bool IsSubmitted()
     {
-        if (_submitted)
-        {
-            return true;
-        }
-        return false;
+        return _submitted;
     }
 
 

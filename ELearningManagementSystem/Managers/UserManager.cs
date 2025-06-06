@@ -48,15 +48,47 @@ public class UserManager
                 newUser = new Student(userId, password, firstName, lastName, email);
                 break;
             case Role.Teacher:
-                newUser = new Teacher(userId, password, firstName, lastName, email);
+                TeacherRole teacherRole = GetTeacherRole();
+                newUser = new Teacher(userId, password, firstName, lastName, email, teacherRole);
                 break;
             default:
-                Console.WriteLine("Are you an Admin?");
+                Console.WriteLine("Error creating new user.");
                 return;
         }
 
         AddUser(newUser);
         Console.WriteLine($"User created successfully. ID: {newUser.UserId}");
+    }
+
+    public TeacherRole GetTeacherRole()
+    {
+        TeacherRole teacherRole;
+        bool finished = false;
+        while (finished)
+        {
+            Console.WriteLine("Choose teacher role: ");
+            Console.WriteLine("1. Unit Convenor");
+            Console.WriteLine("2. Lecturer");
+            Console.WriteLine("3. Tutor");
+            string choice = Console.ReadLine();
+            switch (choice)
+            {
+                case "1":
+                    teacherRole = TeacherRole.UnitConvenor;
+                    return teacherRole;
+                case "2":
+                    teacherRole = TeacherRole.Lecturer;
+                    return teacherRole;
+                case "3":
+                    teacherRole = TeacherRole.Tutor;
+                    return teacherRole;
+                default:
+                    Console.WriteLine("Invalid Exception");
+                    break;
+            }
+        }
+        //Default teacher type
+        return TeacherRole.Tutor;
     }
 
     //Add user to user manager's list of users

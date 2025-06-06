@@ -34,9 +34,10 @@ public class Teacher : User
         get { return _userManager; }
     }
 
-    public Teacher(string id, string password, string firstName, string lastName, string email) : base(id, password, firstName, lastName, email)
+    public Teacher(string id, string password, string firstName, string lastName, string email, TeacherRole teacherRole) : base(id, password, firstName, lastName, email)
     {
         _teachingUnits = new List<Unit>();
+        _role = teacherRole;
     }
 
     //Teacher Menu logic moved to Menu handler class. 

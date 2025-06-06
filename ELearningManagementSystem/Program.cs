@@ -15,6 +15,15 @@ public class Program
         DataSeeder.Seed(userManager, degreeManager, unitManager, taskManager);
 
         //Creating login Manager 
+
+        //For demonstration and testing..
+
+        //Admin account can be reached via login: admin admin
+        //Teacher acccount can be reached via login: teacher teacher
+        //Student account can be reached via login: student student.
+
+        //Or any of the accounts created in the DataSeeder can be used to login with their assigned ID and passwords.
+        //Users created at runtime can also be used.
         LoginManager loginManager = new LoginManager(userManager);
 
         //Program Main loop.
@@ -23,7 +32,6 @@ public class Program
             User user = loginManager.Login();
 
             //Inject Manager dependencies
-            //This is a type pattern match which checks type, and declares a new variable
             if (user is Admin admin)
             {
                 admin.SetManagers(userManager, degreeManager, unitManager, taskManager);
@@ -50,7 +58,5 @@ public class Program
             //Loop user's main menu until logout
             Console.WriteLine("You have been successfully logged out");
         }
-        
-
     }
 }

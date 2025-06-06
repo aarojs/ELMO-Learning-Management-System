@@ -8,15 +8,18 @@ public class StudentMenu
     {
         _student = student;
     }
+
+    //Student Main Menu
     public void ShowMenu()
     {
         _student.IsLoggedIn = true;
         while (_student.IsLoggedIn)
         {
-            Console.WriteLine("Student Menu:");
+            Console.WriteLine("\nStudent Menu:");
+            Console.WriteLine($"Welcome {_student.GetName()}");
             Console.WriteLine("1. View Units");
             Console.WriteLine("2. Change password");
-            Console.WriteLine("3. Logout");
+            Console.WriteLine("3. Logout\n");
 
             String choice = Console.ReadLine();
             switch (choice)
@@ -37,6 +40,7 @@ public class StudentMenu
         }
     }
 
+    //Unit Menu 
     public void UnitMenu()
     {
         if (_student.EnrolledUnits.Any())
@@ -51,8 +55,8 @@ public class StudentMenu
         bool finished = false;
         while (!finished)
         {
-            Console.WriteLine("1. Select Unit");
-            Console.WriteLine("2. Return to previous menu");
+            Console.WriteLine("\n1. Select Unit");
+            Console.WriteLine("2. Return to previous menu\n");
             string choice = Console.ReadLine();
 
             switch (choice)
@@ -61,7 +65,7 @@ public class StudentMenu
                     Console.WriteLine("Enter Unit ID");
                     string unitId = Console.ReadLine();
                     Unit unit = _student.UnitManager.FindUnit(unitId);
-                    
+
                     if (unit != null && _student.EnrolledUnits.Contains(unit))
                     {
                         ManageUnit(unit);
@@ -75,22 +79,24 @@ public class StudentMenu
         }
     }
 
+    //View tasks/Submit tasks for a specific unit
     public void ManageUnit(Unit unit)
     {
         bool finished = false;
         while (!finished)
         {
-            Console.WriteLine($"{unit.UnitCode} - {unit.UnitTitle}");
+            Console.WriteLine($"\n{unit.UnitCode} - {unit.UnitTitle}");
             Console.WriteLine("1. View pending tasks");
             Console.WriteLine("2. View Submitted tasks");
             Console.WriteLine("3. Submit a task");
-            Console.WriteLine("4. Return to previous menu");
+            Console.WriteLine("4. Return to previous menu\n");
             string choice = Console.ReadLine();
 
             switch (choice)
             {
                 case "1":
                     bool tasksPending = false;
+                    Console.WriteLine("Pending Tasks: ");
 
                     foreach (Task task in _student.PendingTasks)
                     {
@@ -108,6 +114,7 @@ public class StudentMenu
 
                 case "2":
                     bool submittedTasks = false;
+                    Console.WriteLine("Submitted Tasks: ");
 
                     foreach (Task task in _student.SubmittedTasks)
                     {

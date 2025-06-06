@@ -17,9 +17,9 @@ public class LoginManager
         bool finished = false;
         while (!finished)
         {
-            Console.WriteLine("Welcome to ELMO. An E-Learning Management Operator");
+            Console.WriteLine("\nWelcome to ELMO. An E-Learning Management Operator");
             Console.WriteLine("1. Login");
-            Console.WriteLine("2. Close system");
+            Console.WriteLine("2. Close system\n");
             string choice = Console.ReadLine();
             switch (choice)
             {
@@ -46,7 +46,7 @@ public class LoginManager
 
                     //If user or Admin is not returned, print error message
                     Console.WriteLine("Login failed. Invalid login credentials");
-                    return null;
+                    break;
                 case "2":
                     finished = true;
                     break;
@@ -54,8 +54,4 @@ public class LoginManager
         }
         return null;
     }
-
-
-
-
 }

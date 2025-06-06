@@ -7,8 +7,6 @@ public class Degree
     private List<Unit> _units;
     private List<Student> _students;
 
-    //Degrees could have faculties, this could be an enum
-    //If you have time?
 
     public string DegreeId
     {
@@ -24,7 +22,6 @@ public class Degree
     {
         get { return _units; }
     }
-    //public list bad
     public List<Student> Students
     {
         get { return _students; }
@@ -54,7 +51,7 @@ public class Degree
 
     public void RemoveUnit(Unit unit)
     {
-        if (!_units.Contains(unit))
+        if (_units.Contains(unit))
         {
             _units.Remove(unit);
         }
@@ -70,7 +67,7 @@ public class Degree
 
     public void RemoveStudent(Student student)
     {
-        if (!_students.Contains(student))
+        if (_students.Contains(student))
         {
             _students.Remove(student);
         }

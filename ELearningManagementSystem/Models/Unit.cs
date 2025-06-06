@@ -58,7 +58,7 @@ public class Unit
 
     public void RemoveStudent(Student student)
     {
-        if (!_enrolledStudents.Contains(student))
+        if (_enrolledStudents.Contains(student))
         {
             _enrolledStudents.Remove(student);
         }
@@ -74,7 +74,7 @@ public class Unit
 
     public void RemoveTeacher(Teacher teacher)
     {
-        if (!_teachers.Contains(teacher))
+        if (_teachers.Contains(teacher))
         {
             _teachers.Remove(teacher);
         }

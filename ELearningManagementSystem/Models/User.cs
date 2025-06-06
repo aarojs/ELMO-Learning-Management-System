@@ -59,9 +59,9 @@ public abstract class User
         Console.WriteLine($"Email: {Email}");
     }
 
-    public virtual void GetName()
+    public virtual string GetName()
     {
-        Console.WriteLine($"{FirstName} {LastName}");
+        return $"{FirstName} {LastName}";
     }
 
     //Student and teacher will have their own custom Main menu implementations 

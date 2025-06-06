@@ -16,11 +16,12 @@ public class AdminMenu
         _admin.IsLoggedIn = true;
         while (_admin.IsLoggedIn)
         {
-            Console.WriteLine("Admin menu ");
+            Console.WriteLine("\nAdmin menu ");
+            Console.WriteLine($"Welcome System Admin");
             Console.WriteLine("1. Manage Users");
             Console.WriteLine("2. Manage Degree");
             Console.WriteLine("3. Mangage Units");
-            Console.WriteLine("4. Logout");
+            Console.WriteLine("4. Logout\n");
             string input = Console.ReadLine();
 
             switch (input)
@@ -50,10 +51,10 @@ public class AdminMenu
         bool userFinished = false;
         while (!userFinished)
         {
-            Console.WriteLine("Manage Users Menu");
+            Console.WriteLine("\nManage Users Menu");
             Console.WriteLine("1. Create a User");
             Console.WriteLine("2. View All Users");
-            Console.WriteLine("3. Return to Main Menu");
+            Console.WriteLine("3. Return to Main Menu\n");
             string userChoice = Console.ReadLine();
 
             switch (userChoice)
@@ -80,11 +81,11 @@ public class AdminMenu
 
         while (!degreeFinished)
         {
-            Console.WriteLine("Manage Degrees");
+            Console.WriteLine("\nManage Degrees");
             Console.WriteLine("1. Create Degree");
             Console.WriteLine("2. View Degrees");
             Console.WriteLine("3. Select Degree");
-            Console.WriteLine("4. Return to Main Menu");
+            Console.WriteLine("4. Return to Main Menu\n");
             string degreeChoice = Console.ReadLine();
 
             switch (degreeChoice)
@@ -124,19 +125,21 @@ public class AdminMenu
         bool finished = false;
         while (!finished)
         {
-            Console.WriteLine($"{degree.DegreeId} - {degree.DegreeName}");
+            Console.WriteLine($"\n{degree.DegreeId} - {degree.DegreeName}");
             Console.WriteLine("1. Add Units to Degree");
             Console.WriteLine("2. Enroll student in Degree");
             Console.WriteLine("3. View Students Enrolled in Degree");
             Console.WriteLine("4. View Units in Degree");
             Console.WriteLine("5. Unenrol a student from degree");
             Console.WriteLine("6. Remove a unit from degree");
-            Console.WriteLine("7. Return to Previous menu");
+            Console.WriteLine("7. Return to Previous menu\n");
             string choice = Console.ReadLine();
 
             switch (choice)
             {
                 case "1":
+                    Console.WriteLine("All units: \n");
+                    _admin.UnitManager.ViewAllUnits();
                     Console.WriteLine("Enter a Unit ID");
                     string unitId = Console.ReadLine();
                     Unit unit = _admin.UnitManager.FindUnit(unitId);
@@ -214,11 +217,11 @@ public class AdminMenu
 
         while (!unitsFinished)
         {
-            Console.WriteLine("Manage Units");
+            Console.WriteLine("\nManage Units");
             Console.WriteLine("1. Create Unit");
             Console.WriteLine("2. View Units");
             Console.WriteLine("3. Select Unit");
-            Console.WriteLine("4. Return to Main Menu");
+            Console.WriteLine("4. Return to Main Menu\n");
             string choice = Console.ReadLine();
 
             switch (choice)
@@ -258,7 +261,7 @@ public class AdminMenu
 
         while (!finished)
         {
-            Console.WriteLine($"{unit.UnitCode} - {unit.UnitTitle}");
+            Console.WriteLine($"\n{unit.UnitCode} - {unit.UnitTitle}");
             Console.WriteLine("1. Manage tasks for Unit");
             Console.WriteLine("2. Enroll Student in Unit");
             Console.WriteLine("3. Assign Teacher to Unit");
@@ -266,7 +269,7 @@ public class AdminMenu
             Console.WriteLine("5. View Teachers assigned to Unit");
             Console.WriteLine("6. Unenrol student from Unit");
             Console.WriteLine("7. Unassign teacher from Unit");
-            Console.WriteLine("8. Return to previous menu");
+            Console.WriteLine("8. Return to previous menu\n");
             string choice = Console.ReadLine();
 
             switch (choice)
@@ -351,10 +354,10 @@ public class AdminMenu
 
         while (!finished)
         {
-            Console.WriteLine($"Managing tasks for {unit.UnitTitle}");
+            Console.WriteLine($"\nManaging tasks for {unit.UnitTitle}");
             Console.WriteLine("1. View all tasks for unit");
             Console.WriteLine("2. Add task to unit");
-            Console.WriteLine("3. Return to previous menu");
+            Console.WriteLine("3. Return to previous menu\n");
             string choice = Console.ReadLine();
 
             switch (choice)
